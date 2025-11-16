@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F7F8FA"
+    android:fitsSystemWindows="true"
+    tools:context=".SettingsActivity">
+
+    <!-- Fixed Top Bar -->
+    <RelativeLayout
+        android:id="@+id/headerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:paddingHorizontal="0dp"
+        android:paddingVertical="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- Back Button -->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabBack"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:clickable="true"
+            app:backgroundTint="#FFFFFF"
+            app:fabSize="mini"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_arrow_back_24"
+            app:tint="#212121" />
+
+        <!-- Title -->
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="24dp"
+            android:text="Settings"
+            android:textColor="#212121"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <!-- Scrollable Content -->
+    <ScrollView
+        android:id="@+id/scrollContainer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:padding="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/headerLayout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="0dp"
+                android:backgroundTint="#FFFFFF"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <!-- DEVICE & CONNECTION SETTINGS -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:text="@string/device_connection"
+                        android:textColor="#3F51B5"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Device ID / MAC Address"
+                        android:textColor="#212121"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/tvDeviceId"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:text="ESP8266-AC4F32"
+                        android:textColor="#757575"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="WiFi / MQTT Broker Config"
+                        android:textColor="#212121"
+                        android:textSize="15sp" />
+
+                    <Button
+                        android:id="@+id/btnEditNetwork"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="4dp"
+                        android:backgroundTint="#E8EAF6"
+                        android:text="Edit"
+                        app:cornerRadius="50dp"
+                        android:textColor="#3F51B5" />
+
+                    <Button
+                        android:id="@+id/btnSetHost"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="12dp"
+                        android:backgroundTint="#E8EAF6"
+                        android:text="Set Host IP"
+                        app:cornerRadius="50dp"
+                        android:textColor="#3F51B5" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="4dp"
+                        android:text="Current IP"
+                        android:textColor="#212121"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tvCurrentIP"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:text="0.0.0.0"
+                        android:textColor="#757575"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Data Sync Interval"
+                        android:textColor="#212121"
+                        android:textSize="15sp" />
+
+                    <Spinner
+                        android:id="@+id/spSyncInterval"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:popupBackground="@drawable/spinner_popup_bg"
+                        android:theme="@style/SpinnerTheme"
+                        android:entries="@array/sync_intervals" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="0dp"
+                android:backgroundTint="#FFFFFF"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <!-- NOTIFICATION & ALERT SETTINGS -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:text="@string/notifications_alerts"
+                        android:textColor="#3F51B5"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/swLowGasAlert"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Low Gas Alert"
+                        android:textColor="#212121"
+                        app:thumbTint="@color/switch_thumb_tint"
+                        app:trackTint="@color/switch_track_tint" />
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/swCriticalAlert"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Critical Alert Sound"
+                        android:textColor="#212121"
+                        app:thumbTint="@color/switch_thumb_tint"
+                        app:trackTint="@color/switch_track_tint" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Alert Threshold (%)"
+                        android:textColor="#212121"
+                        android:textSize="15sp" />
+
+                    <SeekBar
+                        android:id="@+id/seekAlertThreshold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:max="100"
+                        android:progressTint="#4A6CF7"
+                        android:progressBackgroundTint="#D9E2FF"
+                        android:thumbTint="#4A6CF7"
+                        android:progress="15" />
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/swRefillReminder"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="16dp"
+                        android:text="Refill Reminder"
+                        android:textColor="#212121"
+                        app:thumbTint="@color/switch_thumb_tint"
+                        app:trackTint="@color/switch_track_tint" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="10dp"
+                android:backgroundTint="#FFFFFF"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <!-- PROFILE & PERSONALIZATION -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:text="@string/profile_personalization"
+                        android:textColor="#3F51B5"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/btnEditProfile"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:backgroundTint="#E8EAF6"
+                        android:text="Edit Profile"
+                        app:cornerRadius="50dp"
+                        android:textColor="#3F51B5" />
+
+                    <Button
+                        android:id="@+id/btnChangeAgency"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:backgroundTint="#E8EAF6"
+                        android:text="Manage LPG Agency"
+                        app:cornerRadius="50dp"
+                        android:textColor="#3F51B5" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/tvAbout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:gravity="center"
+                android:text="About App\nMyGasMonitor v1.0\nDeveloped by RKS Dev Studio"
+                android:textColor="#757575"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

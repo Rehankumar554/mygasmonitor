@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="3dp"
+    android:backgroundTint="#FFFFFF">
+
+    <TextView
+        android:id="@+id/tvBookingDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="Booked on: --"
+        android:textColor="#212121"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+</androidx.cardview.widget.CardView>

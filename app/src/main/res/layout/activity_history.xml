@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F7F8FA"
+    android:fitsSystemWindows="true"
+    tools:context=".HistoryActivity">
+
+    <!-- Back Button (top-left) -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabBack"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:clickable="true"
+        app:backgroundTint="#FFFFFF"
+        app:tint="#212121"
+        app:fabSize="mini"
+        app:srcCompat="@drawable/ic_arrow_back_24"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- 3-dot menu button (top-right corner) -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnMenu"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:clickable="true"
+        app:backgroundTint="#FFFFFF"
+        app:tint="#212121"
+        app:fabSize="mini"
+        app:srcCompat="@drawable/ic_more_vert_24"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Page Title -->
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Booking History"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="#212121"
+        android:layout_marginTop="24dp"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5" />
+
+    <!-- Subtitle -->
+    <TextView
+        android:id="@+id/tvSubtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Your past gas bookings"
+        android:textSize="14sp"
+        android:textColor="#757575"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- 🔍 Search bar + Filter button container -->
+    <LinearLayout
+        android:id="@+id/searchContainer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="12dp"
+        android:layout_marginHorizontal="16dp"
+        app:layout_constraintTop_toBottomOf="@id/tvSubtitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- Search Bar -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@android:color/transparent"
+            app:boxBackgroundMode="filled"
+            app:boxStrokeColor="@android:color/transparent"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
+            app:boxCornerRadiusTopStart="25dp"
+            app:boxCornerRadiusTopEnd="25dp"
+            app:boxCornerRadiusBottomStart="25dp"
+            app:boxCornerRadiusBottomEnd="25dp"
+            app:boxBackgroundColor="#FFFFFF"
+            app:startIconDrawable="@drawable/ic_search"
+            app:startIconTint="#757575">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:textColor="#212121"
+                android:textColorHint="#9E9E9E"
+                android:paddingVertical="8dp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Filter Button -->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnFilter"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:clickable="true"
+            app:backgroundTint="#3F51B5"
+            app:tint="#FFFFFF"
+            app:fabSize="mini"
+            app:srcCompat="@drawable/ic_filter_list" />
+
+    </LinearLayout>
+
+    <!-- Empty State Layout -->
+    <LinearLayout
+        android:id="@+id/emptyLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/searchContainer"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:id="@+id/imgEmpty"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:src="@drawable/ic_empty_box"
+            android:contentDescription="No data illustration"
+            app:tint="#BDBDBD" />
+
+        <TextView
+            android:id="@+id/tvEmptyMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No booking history yet"
+            android:textSize="16sp"
+            android:textColor="#9E9E9E"
+            android:textStyle="bold"
+            android:layout_marginTop="12dp" />
+    </LinearLayout>
+
+    <!-- RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvHistory"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:clipToPadding="false"
+        android:scrollbars="vertical"
+        app:layout_constraintTop_toBottomOf="@id/searchContainer"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:listitem="@layout/item_history_row" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
