@@ -3,11 +3,13 @@ package com.rksdev.mygasmonitor;
 import android.graphics.PorterDuffColorFilter;
 import android.Manifest;
 import android.content.pm.PackageManager;
+
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import android.text.Html;
 import android.telephony.SmsManager;
 import android.text.TextUtils;
+import androidx.core.view.WindowInsetsCompat;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import androidx.annotation.NonNull;
@@ -20,11 +22,13 @@ import android.content.SharedPreferences;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.view.ViewGroup;
 
 import org.json.JSONObject;
 
@@ -37,6 +41,11 @@ import okhttp3.WebSocketListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import androidx.core.view.ViewCompat;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -44,21 +53,34 @@ import java.util.Locale;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.ArrayList;
+import java.util.List;
+import android.util.SparseArray;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView tvWeight, tvPercent, tvStatus, tvLastUpdate, tvFullWeight, rowStatus, rowLastUpdate;
-    private TextView oledStatus, oledSignal, oledUptime, oledSystem, chkDeviceView;
-    private ImageView rowStatusIcon;
+    private ViewPager2 viewPager;
+    private BottomNavigationView bottomNav;
+    private ScreenSlideAdapter pagerAdapter;
+
+    // Home page views (will be obtained from adapter's stored view)
+    private View homeRoot; // root view of page_home.xml
+
+    // UI elements (references will be found from homeRoot)
+    private TextView tvWeight, tvPercent, tvStatus, tvFullWeight, rowLastUpdate;
+    private TextView oledStatus, oledSignal, oledUptime, oledSystem, chkDeviceView, tvPageTitle;
     private LinearProgressIndicator progressBar;
     private Button btnBook, btnHistory;
+    private FloatingActionButton btnProfile, btnSettings;
+
+    // existing fields preserved
     private SharedPreferences sharedPreferences;
     private static final String PREF_NAME = "BookingData";
     private static final String KEY_BOOKINGS = "bookings";
     private static final String APP_PREFS = "AppPrefs";
     private static final String KEY_HOST = "ws_host";
     private static final int WS_PORT = 8765;
-    private FloatingActionButton btnProfile, btnSettings;
+
     private OkHttpClient client;
     private WebSocket ws;
     private Handler uiHandler;
@@ -84,43 +106,103 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         requestAllPermissions();
         getSupportActionBar().hide();
+
         setContentView(R.layout.activity_main);
         appStartTime = System.currentTimeMillis();
-
-        sharedPreferences = getSharedPreferences(APP_PREFS, MODE_PRIVATE);
-        sharedPreferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-
-        // Bind UI elements
-        btnSettings = findViewById(R.id.btnSettings);
-        btnProfile = findViewById(R.id.btnProfile);
-        tvWeight = findViewById(R.id.tvWeight);
-        tvPercent = findViewById(R.id.tvPercent);
-        tvStatus = findViewById(R.id.tvStatus);
-        rowLastUpdate = findViewById(R.id.rowLastUpdate);
-        rowStatus = findViewById(R.id.rowStatus);
-        rowStatusIcon = findViewById(R.id.rowStatusIcon);
-        tvLastUpdate = findViewById(R.id.tvLastUpdate);
-        progressBar = findViewById(R.id.progressBar);
-        btnBook = findViewById(R.id.btnBook);
-        btnHistory = findViewById(R.id.btnHistory);
-        tvFullWeight = findViewById(R.id.tvFullWeight);
-        oledStatus = findViewById(R.id.oledStatus);
-        oledSignal = findViewById(R.id.oledSignal);
-        oledUptime = findViewById(R.id.oledUptime);
-        oledSystem = findViewById(R.id.oledSystem);
-        chkDeviceView = findViewById(R.id.chkDeviceView);
 
         uiHandler = new Handler(getMainLooper());
         client = new OkHttpClient.Builder().readTimeout(0, TimeUnit.MILLISECONDS).build();
 
-        connectWebSocket();
+        // prepare pager + bottom nav
+        viewPager = findViewById(R.id.viewPager);
+        bottomNav = findViewById(R.id.bottomNav);
 
+        pagerAdapter = new ScreenSlideAdapter();
+        viewPager.setAdapter(pagerAdapter);
+        viewPager.setOffscreenPageLimit(3);
+
+        tvPageTitle = findViewById(R.id.tvPageTitle);
+
+        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+
+                switch (position) {
+                    case 0:
+                        tvPageTitle.setText("IoT Gas Monitor");
+                        break;
+
+                    case 1:
+                        tvPageTitle.setText("Analytics");
+                        break;
+
+                    case 2:
+                        tvPageTitle.setText("History");
+                        break;
+                }
+            }
+        });
+
+        // sync nav <-> pager
+        bottomNav.setOnNavigationItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.nav_home) viewPager.setCurrentItem(0, true);
+            else if (id == R.id.nav_analytics) viewPager.setCurrentItem(1, true);
+            else if (id == R.id.nav_history) viewPager.setCurrentItem(2, true);
+            return true;
+        });
+
+        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback(){
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                if (position == 0) bottomNav.setSelectedItemId(R.id.nav_home);
+                else if (position == 1) bottomNav.setSelectedItemId(R.id.nav_analytics);
+                else if (position == 2) bottomNav.setSelectedItemId(R.id.nav_history);
+            }
+        });
+
+        // wait until adapter creates views; post to queue
+        uiHandler.postDelayed(() -> {
+            homeRoot = pagerAdapter.getPageView(0);
+            if (homeRoot != null) bindHomeViewsAndInit();
+        }, 200);
+
+        sharedPreferences = getSharedPreferences(APP_PREFS, MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+
+        // connect WS (connectWebSocket uses saved host from prefs)
+        connectWebSocket();
+    }
+
+    // bind views from page_home.xml
+    private void bindHomeViewsAndInit() {
+        if (homeRoot == null) return;
+
+        btnSettings = findViewById(R.id.btnSettings);
+        btnProfile = findViewById(R.id.btnProfile);
+        tvWeight = homeRoot.findViewById(R.id.tvWeight);
+        tvPercent = homeRoot.findViewById(R.id.tvPercent);
+        tvStatus = homeRoot.findViewById(R.id.tvStatus);
+        rowLastUpdate = homeRoot.findViewById(R.id.rowLastUpdate);
+        progressBar = homeRoot.findViewById(R.id.progressBar);
+        btnBook = homeRoot.findViewById(R.id.btnBook);
+        btnHistory = homeRoot.findViewById(R.id.btnHistory);
+        tvFullWeight = homeRoot.findViewById(R.id.tvFullWeight);
+        oledStatus = homeRoot.findViewById(R.id.oledStatus);
+        oledSignal = homeRoot.findViewById(R.id.oledSignal);
+        oledUptime = homeRoot.findViewById(R.id.oledUptime);
+        oledSystem = homeRoot.findViewById(R.id.oledSystem);
+        chkDeviceView = homeRoot.findViewById(R.id.chkDeviceView);
+
+        // listeners (same as before)
         btnSettings.setOnClickListener(v -> startActivity(new Intent(this, SettingsActivity.class)));
         btnProfile.setOnClickListener(v -> startActivity(new Intent(this, ProfileActivity.class)));
         btnBook.setOnClickListener(v -> showConfirmationDialog());
         btnHistory.setOnClickListener(v -> startActivity(new Intent(this, HistoryActivity.class)));
 
-        // Update “Last Update” text every second
+        // Start the refresh loop for last update text
         Handler refreshHandler = new Handler();
         Runnable refreshTask = new Runnable() {
             @Override
@@ -191,6 +273,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showConfirmationDialog() {
+        if (homeRoot == null) return;
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this, R.style.AlertDialogTheme);
         builder.setIcon(R.drawable.ic_gas_cylinder);
         builder.setTitle(Html.fromHtml("<font color='#212121'>Confirm Booking</font>"));
@@ -227,13 +310,13 @@ public class MainActivity extends AppCompatActivity {
                     saveBooking();
                     Toast.makeText(this, "Refill booked successfully!", Toast.LENGTH_SHORT).show();
                     isDialogVisible = false;
-                    dialogDismissed = false; // can alert again when cycle resets
+                    dialogDismissed = false;
                 });
 
         builder.setNegativeButton(Html.fromHtml("<font color='#D32F2F'>No</font>", Html.FROM_HTML_MODE_LEGACY),
                 (dialog, which) -> {
                     dialog.dismiss();
-                    dialogDismissed = true; // user said no, don't show until next low cycle
+                    dialogDismissed = true;
                     isDialogVisible = false;
                 });
 
@@ -304,26 +387,17 @@ public class MainActivity extends AppCompatActivity {
         else if (level >= 20) { statusText = "Low"; color = Color.parseColor("#F57C00"); }
         else { statusText = "Very Low"; color = Color.parseColor("#F44336"); }
 
-        tvStatus.setText(statusText);
-        rowStatus.setText(statusText);
-        tvStatus.setTextColor(color);
-        rowStatus.setTextColor(color);
-        progressBar.setIndicatorColor(color);
-
-        Drawable drawable = rowStatusIcon.getDrawable();
-        if (drawable != null) {
-            Drawable wrapped = drawable.mutate();
-            wrapped.setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN));
-            rowStatusIcon.setImageDrawable(wrapped);
+        if (tvStatus != null) {
+            tvStatus.setText(statusText);
+            tvStatus.setTextColor(color);
         }
 
-        // ✅ Refill dialog logic (smart cycle detection)
+        // Refill dialog logic (smart cycle detection)
         if (level < 20 && !isDialogVisible && !wasLowPreviously) {
             showLowGasDialog(level);
-            wasLowPreviously = true; // mark this low event
+            wasLowPreviously = true;
         }
 
-        // Reset flags when level rises again to safe zone
         if (level > 30) {
             wasLowPreviously = false;
             dialogDismissed = false;
@@ -334,7 +408,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences(APP_PREFS, MODE_PRIVATE);
         String host = prefs.getString(KEY_HOST, null);
         if (host == null || host.isEmpty()) {
-            runOnUiThread(() -> oledStatus.setText("Status: No IP set"));
+            if (oledStatus != null) runOnUiThread(() -> oledStatus.setText("Status: No IP set"));
             return null;
         }
         return "ws://" + host + ":" + WS_PORT;
@@ -347,12 +421,12 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        runOnUiThread(() -> {
+        if (oledStatus != null) runOnUiThread(() -> {
             oledStatus.setText("Status: Connecting...");
-            oledSignal.setText("Signal: --");
-            oledUptime.setText("Uptime: --");
-            oledSystem.setText("System: --");
-            chkDeviceView.setVisibility(View.GONE);
+            if (oledSignal != null) oledSignal.setText("Signal: --");
+            if (oledUptime != null) oledUptime.setText("Uptime: --");
+            if (oledSystem != null) oledSystem.setText("System: --");
+            if (chkDeviceView != null) chkDeviceView.setVisibility(View.GONE);
         });
 
         dataReceivedYet = false;
@@ -362,7 +436,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onOpen(WebSocket webSocket, Response response) {
                 Log.i(TAG, "WS opened");
-                uiHandler.post(() -> oledStatus.setText("Status: Loading..."));
+                uiHandler.post(() -> {
+                    if (oledStatus != null) oledStatus.setText("Status: Loading...");
+                });
             }
 
             @Override
@@ -381,44 +457,46 @@ public class MainActivity extends AppCompatActivity {
                     final String chkDevice = obj.optString("chkdevice", "");
 
                     uiHandler.post(() -> {
-                        oledStatus.setText("Status: Connected");
-                        oledSignal.setText("Signal: " + signal);
-                        oledUptime.setText("Uptime: " + uptime);
+                        if (oledStatus != null) oledStatus.setText("Status: Connected");
+                        if (oledSignal != null) oledSignal.setText("Signal: " + signal);
+                        if (oledUptime != null) oledUptime.setText("Uptime: " + uptime);
 
-                        // ===== System line coloring =====
-                        if (systemStatus.equalsIgnoreCase("ERR")) {
-                            oledSystem.setText(Html.fromHtml(
-                                    "<font color='#00FF00'>System:</font> " +
-                                            "<font color='#F44336'>ERR</font>",
-                                    Html.FROM_HTML_MODE_LEGACY
-                            ));
-                        } else {
-                            oledSystem.setText(Html.fromHtml(
-                                    "<font color='#00FF00'>System:</font> " +
-                                            "<font color='#4CAF50'>OK</font>",
-                                    Html.FROM_HTML_MODE_LEGACY
-                            ));
+                        // System coloring
+                        if (oledSystem != null) {
+                            if (systemStatus.equalsIgnoreCase("ERR")) {
+                                oledSystem.setText(Html.fromHtml(
+                                        "<font color='#00FF00'>System:</font> " +
+                                                "<font color='#F44336'>ERR</font>",
+                                        Html.FROM_HTML_MODE_LEGACY
+                                ));
+                            } else {
+                                oledSystem.setText(Html.fromHtml(
+                                        "<font color='#00FF00'>System:</font> " +
+                                                "<font color='#4CAF50'>OK</font>",
+                                        Html.FROM_HTML_MODE_LEGACY
+                                ));
+                            }
                         }
 
-                        // ===== Chk Device line coloring =====
-                        if (chkDevice != null && !chkDevice.trim().isEmpty()) {
-                            chkDeviceView.setVisibility(View.VISIBLE);
-                            chkDeviceView.setText(Html.fromHtml(
-                                    "<font color='#00FF00'>Chk Device:</font> " +
-                                            "<font color='#F44336'>" + chkDevice + "</font>",
-                                    Html.FROM_HTML_MODE_LEGACY
-                            ));
-                        } else {
-                            chkDeviceView.setVisibility(View.GONE);
+                        if (chkDeviceView != null) {
+                            if (chkDevice != null && !chkDevice.trim().isEmpty()) {
+                                chkDeviceView.setVisibility(View.VISIBLE);
+                                chkDeviceView.setText(Html.fromHtml(
+                                        "<font color='#00FF00'>Chk Device:</font> " +
+                                                "<font color='#F44336'>" + chkDevice + "</font>",
+                                        Html.FROM_HTML_MODE_LEGACY
+                                ));
+                            } else {
+                                chkDeviceView.setVisibility(View.GONE);
+                            }
                         }
 
-                        // ===== Weight / Level Update =====
-                        if (!Double.isNaN(weight))
+                        if (!Double.isNaN(weight) && tvWeight != null)
                             tvWeight.setText(String.format("%.2f kg", weight));
-                        if (!Double.isNaN(level))
+                        if (!Double.isNaN(level) && tvPercent != null)
                             tvPercent.setText(String.format("%.1f %%", level));
 
-                        progressBar.setProgress((int) level);
+                        if (progressBar != null) progressBar.setProgress((int) level);
                         updateGasStatus(level);
                         markDataReceived();
                     });
@@ -431,14 +509,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClosed(WebSocket webSocket, int code, String reason) {
                 Log.i(TAG, "WS closed");
-                uiHandler.post(() -> oledStatus.setText("Status: Disconnected"));
+                uiHandler.post(() -> {
+                    if (oledStatus != null) oledStatus.setText("Status: Disconnected");
+                });
                 if (!manuallyClosed) scheduleReconnect();
             }
 
             @Override
             public void onFailure(WebSocket webSocket, Throwable t, Response response) {
                 Log.e(TAG, "WS failure: " + t.getMessage());
-                runOnUiThread(() -> oledStatus.setText("Status: Conn failed"));
+                runOnUiThread(() -> {
+                    if (oledStatus != null) oledStatus.setText("Status: Conn failed");
+                });
                 if (!manuallyClosed) scheduleReconnect();
             }
         });
@@ -450,6 +532,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateLastUpdateTime() {
+        if (rowLastUpdate == null) return;
         if (lastUpdateTimestamp == 0) {
             rowLastUpdate.setText("--");
             return;
@@ -482,5 +565,41 @@ public class MainActivity extends AppCompatActivity {
         if (ws != null) ws.cancel();
         if (client != null) client.dispatcher().executorService().shutdown();
         super.onDestroy();
+    }
+
+    // ----------------- ViewPager Adapter: minimal, stores views -----------------
+    private class ScreenSlideAdapter extends RecyclerView.Adapter<ScreenSlideAdapter.VH> {
+        private final int[] layouts = new int[] {
+                R.layout.page_home,
+                R.layout.page_analytics,
+                R.layout.page_history
+        };
+        private final SparseArray<View> createdViews = new SparseArray<>();
+
+        @NonNull
+        @Override
+        public VH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View v = LayoutInflater.from(parent.getContext()).inflate(viewType, parent, false);
+            return new VH(v);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull VH holder, int position) {
+            createdViews.put(position, holder.itemView);
+        }
+
+        @Override
+        public int getItemCount() { return layouts.length; }
+
+        @Override
+        public int getItemViewType(int position) { return layouts[position]; }
+
+        public View getPageView(int position) {
+            return createdViews.get(position);
+        }
+
+        class VH extends RecyclerView.ViewHolder {
+            VH(@NonNull View itemView) { super(itemView); }
+        }
     }
 }

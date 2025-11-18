@@ -38,8 +38,12 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:1.4.0")
     implementation("com.squareup.okhttp3:okhttp:4.11.0")
 
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    implementation("androidx.fragment:fragment-ktx:1.8.9")
+
     implementation(libs.appcompat)
     implementation(libs.material)
+    implementation(libs.core.ktx)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
     testImplementation(libs.junit)

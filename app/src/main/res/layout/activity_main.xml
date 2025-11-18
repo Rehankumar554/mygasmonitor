@@ -1,424 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#F7F8FA"
     android:fitsSystemWindows="true"
-    tools:context=".MainActivity">
+    android:background="@color/page_bg_color"
+    android:layout_height="match_parent">
 
-    <!-- ===== SETTINGS BUTTON (TOP LEFT) ===== -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btnSettings"
-        android:layout_width="wrap_content"
+    <!-- ===== GLOBAL TOP BUTTONS (VISIBLE ON ALL TABS) ===== -->
+    <FrameLayout
+        android:id="@+id/topButtonContainer"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:clickable="true"
-        app:backgroundTint="#FFFFFF"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_settings"
-        app:tint="#3F51B5" />
-
-    <!-- ===== PROFILE BUTTON (TOP RIGHT) ===== -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btnProfile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
-        android:clickable="true"
-        app:backgroundTint="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_person"
-        app:tint="#3F51B5" />
-
-    <!-- ===== MAIN CONTENT ===== -->
-    <LinearLayout
-        android:id="@+id/contentLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:paddingHorizontal="24dp"
-        android:paddingTop="32dp"
-        app:layout_constraintBottom_toTopOf="@+id/btnHistory"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <!-- TITLE -->
-        <TextView
-            android:id="@+id/tvTitle"
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnSettings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="IoT Gas Monitor"
-            android:textColor="#212121"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
-        <!-- LAST UPDATE -->
-        <TextView
-            android:id="@+id/tvLastUpdate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:text="Last update: Just now"
-            android:textColor="#757575"
-            android:textSize="14sp" />
-
-        <!-- MAIN CARD (Progress & Info) -->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="12dp"
-            android:backgroundTint="#FFFFFF"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="5dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
-
-                <com.google.android.material.progressindicator.LinearProgressIndicator
-                    android:id="@+id/progressBar"
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="8dp"
-                    app:indicatorColor="#4A6CF7"
-                    app:indicatorDirectionLinear="leftToRight"
-                    app:indicatorInset="0dp"
-                    app:trackColor="#D9E2FF"
-                    app:trackCornerRadius="10dp"
-                    app:trackThickness="20dp" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Level: "
-                        android:textSize="18dp"
-                        android:textColor="#212121"/>
-
-                    <TextView
-                        android:id="@+id/tvPercent"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="#212121"
-                        android:text="N/A"
-                        android:textSize="18sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp">
-
-                    <TextView
-                        android:id="@+id/tvWeight"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="N/A"
-                        android:textColor="#424242"
-                        android:textSize="18sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=" / "
-                        android:textColor="#424242"
-                        android:textSize="18sp" />
-
-                    <TextView
-                        android:id="@+id/tvFullWeight"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="14.2 kg"
-                        android:textColor="#424242"
-                        android:textSize="18sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Status: "
-                        android:textColor="#212121"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:id="@+id/tvStatus"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="N/A"
-                        android:textColor="#388E3C"
-                        android:textSize="16sp" />
-                </LinearLayout>
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <!-- MINI STATS ROW -->
-        <LinearLayout
-            android:id="@+id/miniStatsRow"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <!-- Usage -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="8dp">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_flame"
-                    app:tint="#4A6CF7" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Usage"
-                    android:textColor="#212121"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="2.1 kg"
-                    android:textColor="#757575"
-                    android:textSize="12sp" />
-            </LinearLayout>
-
-            <!-- Last Update -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="8dp">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_clock"
-                    app:tint="#4A6CF7" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Last Update"
-                    android:textColor="#212121"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/rowLastUpdate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="N/A"
-                    android:textColor="#757575"
-                    android:textSize="12sp" />
-            </LinearLayout>
-
-            <!-- Status -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="8dp">
-
-                <ImageView
-                    android:id="@+id/rowStatusIcon"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_check_circle" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Status"
-                    android:textColor="#212121"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/rowStatus"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="N/A"
-                    android:textColor="#757575"
-                    android:textSize="12sp" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <!-- ===== SYSTEM INFO TITLE (Centered Above OLED) ===== -->
-        <LinearLayout
-            android:id="@+id/systemInfoContainer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="12dp"
             android:layout_gravity="start"
-            android:gravity="center_horizontal">
+            app:backgroundTint="#FFFFFF"
+            android:layout_margin="16dp"
+            app:srcCompat="@drawable/ic_settings"
+            app:tint="#3F51B5" />
 
-            <TextView
-                android:id="@+id/tvSystemInfoTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="System Info."
-                android:textColor="#212121"
-                android:textStyle="bold"
-                android:textSize="16sp"
-                android:gravity="center"
-                android:layout_marginBottom="6dp" />
+        <TextView
+            android:id="@+id/tvPageTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="IoT Gas Monitor"
+            android:textSize="20sp"
+            android:textColor="#212121"
+            android:textStyle="bold"
+            android:layout_gravity="center" />
 
-            <!-- ===== OLED DISPLAY SIMULATION ===== -->
-            <androidx.cardview.widget.CardView
-                android:id="@+id/oledDisplay"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:elevation="6dp"
-                app:cardCornerRadius="8dp"
-                app:cardBackgroundColor="#000000">
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            app:backgroundTint="#FFFFFF"
+            android:layout_margin="16dp"
+            app:srcCompat="@drawable/ic_person"
+            app:tint="#3F51B5" />
+    </FrameLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:gravity="start"
-                    android:paddingHorizontal="10dp"
-                    android:paddingVertical="8dp">
-
-                    <!-- OLED Title -->
-                    <TextView
-                        android:id="@+id/oledStatus"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Device Status"
-                        android:textColor="#00FF00"
-                        android:textSize="13sp"
-                        android:fontFamily="@font/pixel"
-                        android:includeFontPadding="false" />
-
-                    <!-- Signal Strength -->
-                    <TextView
-                        android:id="@+id/oledSignal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Signal: N/A"
-                        android:textColor="#00FF00"
-                        android:textSize="12sp"
-                        android:fontFamily="@font/pixel"
-                        android:includeFontPadding="false"
-                        android:layout_marginTop="2dp" />
-
-                    <!-- Uptime -->
-                    <TextView
-                        android:id="@+id/oledUptime"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Uptime: N/A"
-                        android:textColor="#00FF00"
-                        android:textSize="12sp"
-                        android:fontFamily="@font/pixel"
-                        android:includeFontPadding="false"
-                        android:layout_marginTop="2dp" />
-
-                    <!-- System Status -->
-                    <TextView
-                        android:id="@+id/oledSystem"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="System: N/A"
-                        android:textColor="#00FF00"
-                        android:textSize="12sp"
-                        android:fontFamily="@font/pixel"
-                        android:includeFontPadding="false"
-                        android:layout_marginTop="2dp" />
-
-                    <TextView
-                        android:id="@+id/chkDeviceView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="#F44336"
-                        android:textSize="12sp"
-                        android:fontFamily="@font/pixel"
-                        android:includeFontPadding="false"
-                        android:visibility="gone"
-                        android:text="Chk Device"
-                        tools:ignore="HardcodedText"
-                        android:layout_marginTop="2dp" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-        </LinearLayout>
-    </LinearLayout>
-
-    <!-- ===== BOTTOM BUTTONS ===== -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnHistory"
+    <!-- ViewPager2 fills entire screen EXCEPT bottom nav area -->
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginBottom="5dp"
-        android:text="History"
-        android:textColor="#303F9F"
-        android:textStyle="bold"
-        app:backgroundTint="#E8EAF6"
-        app:cornerRadius="50dp"
-        app:layout_constraintBottom_toTopOf="@+id/btnBook"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/bottomNav"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/topButtonContainer" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnBook"
+    <!-- Bottom Navigation EXACT at bottom -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNav"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginBottom="10dp"
-        android:text="Book Gas Online"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold"
-        app:backgroundTint="#3F51B5"
-        app:cornerRadius="50dp"
-        app:layout_constraintBottom_toTopOf="@+id/tvTagline"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.666"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/tvTagline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:gravity="center"
-        android:text="MyGasMonitor • Powered by RKS Dev\nCreated by ❤️"
-        android:textColor="#9E9E9E"
-        android:textSize="12sp"
+        android:layout_height="64dp"
+        android:layout_marginBottom="12dp"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/bg_bottom_nav_floating"
+        android:elevation="12dp"
+        android:paddingHorizontal="22dp"
+        app:itemIconSize="28dp"
+        app:itemIconTint="@color/bottom_nav_selector"
+        app:itemTextColor="@color/bottom_nav_selector"
+        app:itemHorizontalTranslationEnabled="false"
+        app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:menu="@menu/bottom_nav_menu" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
