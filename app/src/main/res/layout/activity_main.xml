@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:fitsSystemWindows="true"
+    android:layout_height="match_parent"
     android:background="@color/page_bg_color"
-    android:layout_height="match_parent">
+    android:fitsSystemWindows="true">
 
-    <!-- ===== GLOBAL TOP BUTTONS (VISIBLE ON ALL TABS) ===== -->
+    <!-- ===== GLOBAL TOP BUTTONS ===== -->
     <FrameLayout
         android:id="@+id/topButtonContainer"
         android:layout_width="match_parent"
@@ -19,8 +18,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
-            app:backgroundTint="#FFFFFF"
             android:layout_margin="16dp"
+            app:backgroundTint="#FFFFFF"
             app:srcCompat="@drawable/ic_settings"
             app:tint="#3F51B5" />
 
@@ -28,55 +27,62 @@
             android:id="@+id/tvPageTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_weight="1"
             android:text="IoT Gas Monitor"
-            android:textSize="20sp"
             android:textColor="#212121"
-            android:textStyle="bold"
-            android:layout_gravity="center" />
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/btnProfile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            app:backgroundTint="#FFFFFF"
             android:layout_margin="16dp"
+            app:backgroundTint="#FFFFFF"
             app:srcCompat="@drawable/ic_person"
             app:tint="#3F51B5" />
     </FrameLayout>
 
-    <!-- ViewPager2 fills entire screen EXCEPT bottom nav area -->
+    <!-- ViewPager2 fills screen but stops above the nav container -->
+    <!-- CHANGE 1: Constraint bottom to navContainer instead of bottomNav -->
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/bottomNav"
+        app:layout_constraintBottom_toTopOf="@id/navContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/topButtonContainer" />
 
-    <!-- Bottom Navigation EXACT at bottom -->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNav"
-        android:layout_width="0dp"
-        android:layout_height="64dp"
-        android:layout_marginBottom="12dp"
-        android:layout_marginHorizontal="32dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/bg_bottom_nav_floating"
-        android:elevation="12dp"
-        android:paddingHorizontal="22dp"
-        app:itemIconSize="28dp"
-        app:itemIconTint="@color/bottom_nav_selector"
-        app:itemTextColor="@color/bottom_nav_selector"
-        app:itemHorizontalTranslationEnabled="false"
-        app:labelVisibilityMode="labeled"
+    <!-- CHANGE 2: New Container Layout (Height 80dp) -->
+    <FrameLayout
+        android:id="@+id/navContainer"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:menu="@menu/bottom_nav_menu" />
+        app:layout_constraintStart_toStartOf="parent">
 
+        <!-- Bottom Navigation centered inside the container -->
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNav"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="20dp"
+            android:background="@drawable/bg_bottom_nav_floating"
+            android:elevation="12dp"
+            android:paddingHorizontal="22dp"
+            app:itemHorizontalTranslationEnabled="false"
+            app:itemIconSize="28dp"
+            app:itemIconTint="@color/bottom_nav_selector"
+            app:itemTextColor="@color/bottom_nav_selector"
+            app:labelVisibilityMode="labeled"
+            app:menu="@menu/bottom_nav_menu" />
+
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
