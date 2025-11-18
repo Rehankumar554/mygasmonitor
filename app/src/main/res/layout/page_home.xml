@@ -10,7 +10,10 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:clipToPadding="false"
+        android:clipChildren="false">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardContainer"
@@ -19,7 +22,6 @@
             android:backgroundTint="#FFFFFF"
             app:cardCornerRadius="16dp"
             app:cardElevation="5dp"
-            android:layout_margin="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -121,7 +123,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="28dp"
-            android:layout_marginStart="20dp"
             android:text="At a Glance"
             android:textColor="#212121"
             android:textSize="20sp"
@@ -147,7 +148,6 @@
                 app:cardElevation="3dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="8dp"
-                android:layout_marginStart="20dp"
                 android:layout_marginEnd="8dp">
 
                 <LinearLayout
@@ -231,7 +231,6 @@
                 app:cardCornerRadius="12dp"
                 app:cardElevation="3dp"
                 android:layout_marginTop="12dp"
-                android:layout_marginEnd="20dp"
                 android:layout_marginBottom="8dp"
                 android:layout_marginStart="8dp">
 
@@ -272,7 +271,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="28dp"
-            android:layout_marginStart="20dp"
             android:text="Device Info"
             android:textColor="#212121"
             android:textSize="20sp"
@@ -285,8 +283,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
             android:elevation="6dp"
             app:cardBackgroundColor="#000000"
             app:cardCornerRadius="12dp"
@@ -371,8 +367,6 @@
                 android:id="@+id/btnHistory"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
                 android:text="Booking History"
                 android:textColor="#303F9F"
                 android:textStyle="bold"
@@ -385,8 +379,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
                 android:text="Book Gas Online"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"

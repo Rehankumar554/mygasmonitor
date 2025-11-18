@@ -3,7 +3,6 @@ package com.rksdev.mygasmonitor;
 import android.graphics.PorterDuffColorFilter;
 import android.Manifest;
 import android.content.pm.PackageManager;
-
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import android.text.Html;

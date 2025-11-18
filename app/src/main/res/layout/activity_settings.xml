@@ -8,7 +8,6 @@
     android:fitsSystemWindows="true"
     tools:context=".SettingsActivity">
 
-    <!-- Fixed Top Bar -->
     <RelativeLayout
         android:id="@+id/headerLayout"
         android:layout_width="match_parent"
@@ -19,7 +18,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <!-- Back Button -->
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabBack"
             android:layout_width="40dp"
@@ -35,7 +33,6 @@
             app:srcCompat="@drawable/ic_arrow_back_24"
             app:tint="#212121" />
 
-        <!-- Title -->
         <TextView
             android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
@@ -49,7 +46,6 @@
             android:textStyle="bold" />
     </RelativeLayout>
 
-    <!-- Scrollable Content -->
     <ScrollView
         android:id="@+id/scrollContainer"
         android:layout_width="match_parent"
@@ -63,15 +59,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="20dp"
+            android:clipToPadding="false"
+            android:clipChildren="false">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginBottom="0dp"
                 android:backgroundTint="#FFFFFF"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="4dp">
@@ -82,7 +77,6 @@
                     android:orientation="vertical"
                     android:padding="20dp">
 
-                    <!-- DEVICE & CONNECTION SETTINGS -->
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -177,9 +171,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginBottom="0dp"
                 android:backgroundTint="#FFFFFF"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="4dp">
@@ -190,7 +181,6 @@
                     android:orientation="vertical"
                     android:padding="20dp">
 
-                    <!-- NOTIFICATION & ALERT SETTINGS -->
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -254,9 +244,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginBottom="10dp"
                 android:backgroundTint="#FFFFFF"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="4dp">
@@ -267,7 +254,6 @@
                     android:orientation="vertical"
                     android:padding="20dp">
 
-                    <!-- PROFILE & PERSONALIZATION -->
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -304,7 +290,7 @@
                 android:id="@+id/tvAbout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"
                 android:gravity="center"
                 android:text="About App\nMyGasMonitor v1.0\nDeveloped by RKS Dev Studio"
                 android:textColor="#757575"
