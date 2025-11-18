@@ -91,13 +91,6 @@
                     android:src="@drawable/ic_timeline"
                     app:tint="#4A6CF7"/>
 
-                <View
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:background="@drawable/timeline_dot_blue"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginStart="12dp" />
-
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -160,13 +153,6 @@
                         android:src="@drawable/ic_trending"
                     app:tint="#43A047"/>
 
-                <View
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:background="@drawable/timeline_dot_green"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginStart="12dp" />
-
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -228,13 +214,6 @@
                     android:layout_height="28dp"
                     android:src="@drawable/ic_calendar"
                     app:tint="#FB8C00"/>
-
-                <View
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:background="@drawable/timeline_dot_orange"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginStart="12dp" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
