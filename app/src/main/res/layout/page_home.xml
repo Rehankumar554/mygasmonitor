@@ -303,6 +303,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:includeFontPadding="false"
+                    android:fontFamily="@font/pixel"
                     android:text="Device Status"
                     android:textColor="#00FF00"
                     android:textSize="14sp" />
@@ -313,6 +314,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:includeFontPadding="false"
+                    android:fontFamily="@font/pixel"
                     android:text="Signal: N/A"
                     android:textColor="#00FF00"
                     android:textSize="13sp" />
@@ -323,6 +325,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:includeFontPadding="false"
+                    android:fontFamily="@font/pixel"
                     android:text="Uptime: N/A"
                     android:textColor="#00FF00"
                     android:textSize="13sp" />
@@ -333,6 +336,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:includeFontPadding="false"
+                    android:fontFamily="@font/pixel"
                     android:text="System: N/A"
                     android:textColor="#00FF00"
                     android:textSize="13sp" />
@@ -343,6 +347,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:includeFontPadding="false"
+                    android:fontFamily="@font/pixel"
                     android:text="Chk Device"
                     android:textColor="#F44336"
                     android:textSize="13sp"

@@ -12,7 +12,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    private TextView tvCustomerName, tvConsumerId, tvAadhaarId, tvPhone, tvEmail, tvCylinderType, tvAgencyName, tvLastRefill, tvAddress, tvAgencyBookingNumber;
+    private TextView tvCustomerName, tvConsumerId, tvAadhaarId, tvPhone, tvEmail, tvCylinderType, tvAgencyName, tvAddress, tvAgencyBookingNumber;
     private Button btnBook; // Edit Details button
 
     private FloatingActionButton fabBack;
@@ -32,7 +32,6 @@ public class ProfileActivity extends AppCompatActivity {
         tvCylinderType = findViewById(R.id.tvCylinderType);
         tvAgencyName = findViewById(R.id.tvAgencyName);
         tvAgencyBookingNumber = findViewById(R.id.tvAgencyBookingNumber);
-        tvLastRefill = findViewById(R.id.tvLastRefill);
         tvAddress = findViewById(R.id.tvAddress);
         btnBook = findViewById(R.id.btnBook);
 
@@ -74,7 +73,6 @@ public class ProfileActivity extends AppCompatActivity {
         tvCylinderType.setText(prefs.getString("cylinder_type", "N/A"));
         tvAgencyName.setText(prefs.getString("agency_name", "N/A"));
         tvAgencyBookingNumber.setText(prefs.getString("agency_booking_number", "N/A"));
-        tvLastRefill.setText(prefs.getString("last_refill", "N/A"));
         tvAddress.setText(prefs.getString("address", "N/A"));
     }
 }
