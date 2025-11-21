@@ -24,12 +24,6 @@
         android:theme="@style/Theme.MyGasMonitor"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".LogsActivity"
-            android:exported="false" />
-        <activity
-            android:name=".AnalyticsActivity"
-            android:exported="false" />
-        <activity
             android:name=".EditDetailsActivity"
             android:exported="false" />
         <activity
