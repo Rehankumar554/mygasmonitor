@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -42,6 +43,12 @@ dependencies {
     implementation("androidx.fragment:fragment-ktx:1.8.9")
 
     implementation("androidx.localbroadcastmanager:localbroadcastmanager:1.1.0")
+
+    // FireBase
+    implementation(platform("com.google.firebase:firebase-bom:34.6.0"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-auth")
+
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.core.ktx)
